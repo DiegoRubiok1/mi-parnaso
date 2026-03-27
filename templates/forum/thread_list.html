@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Foro - Mi Parnaso{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Foro de discusión</h1>
+            {% if user.is_authenticated and not user.is_banned %}
+                <a href="{% url 'forum:create-thread' %}" class="btn btn-primary">Crear tema</a>
+            {% endif %}
+        </div>
+
+        {% if threads %}
+            <div class="list-group">
+                {% for thread in threads %}
+                    <a href="{% url 'forum:thread-detail' thread.slug %}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ thread.title }}</h6>
+                            <small class="text-muted">{{ thread.created_at|date:"d M Y" }}</small>
+                        </div>
+                        <p class="mb-1 text-muted small">Por <strong>{{ thread.author.username }}</strong> • {{ thread.reply_count }} respuestas</p>
+                        {% if thread.is_locked %}
+                            <span class="badge bg-danger">Cerrado</span>
+                        {% endif %}
+                    </a>
+                {% endfor %}
+            </div>
+
+            {% if is_paginated %}
+                <nav aria-label="Paginación" class="mt-4">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1">Primero</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Último</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% else %}
+            <p class="text-muted">No hay temas aún. ¡Crea el primero!</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="alert alert-warning mt-5">
+    <strong>Aviso importante:</strong> Este es un espacio para intercambio respetuoso de ideas. Por favor, respeta los términos de uso y la privacidad de otros usuarios. Los comentarios ofensivos o que violen nuestras normas serán moderados.
+</div>
+{% endblock %}
+

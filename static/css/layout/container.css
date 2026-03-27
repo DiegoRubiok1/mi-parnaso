@@ -1,0 +1,9 @@
+.container {
+    max-width: 1000px;
+}
+
+main {
+    min-height: calc(100vh - 300px);
+    padding: var(--spacing-2xl) 0;
+}
+

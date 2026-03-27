@@ -1,0 +1,54 @@
+.form-control,
+.form-select {
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    font-family: var(--font-sans);
+    padding: var(--spacing-md);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+    outline: none;
+}
+
+.form-label {
+    font-family: var(--font-serif);
+    color: var(--color-primary-dark);
+    font-weight: 400;
+    margin-bottom: var(--spacing-sm);
+    font-size: 1.05rem;
+}
+
+.form-hint {
+    display: block;
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+    margin-top: 0.35rem;
+}
+
+.form-error {
+    display: block;
+    color: var(--color-danger);
+    font-size: 0.9rem;
+    margin-top: 0.35rem;
+}
+
+.password-requirements {
+    border: 1px solid var(--color-border);
+    background: #fff;
+    padding: 0.85rem 1rem;
+}
+
+.password-requirements ul {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.password-requirements li {
+    color: var(--color-text-light);
+    margin: 0.2rem 0;
+}
+

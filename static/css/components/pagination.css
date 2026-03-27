@@ -1,0 +1,25 @@
+.pagination {
+    justify-content: center;
+    margin: var(--spacing-2xl) 0;
+}
+
+.page-link {
+    color: var(--color-primary);
+    border: 1px solid var(--color-border);
+    font-family: var(--font-serif);
+    margin: 0 var(--spacing-xs);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.page-link:hover {
+    color: white;
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.page-item.active .page-link {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+

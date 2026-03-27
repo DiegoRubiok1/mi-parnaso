@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{{ thread.title }} - Foro - Mi Parnaso{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <a href="{% url 'forum:thread-list' %}" class="btn btn-secondary btn-sm mb-3">&larr; Volver al foro</a>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="card-title">{{ thread.title }}</h2>
+                <p class="card-text text-muted small">Por <strong>{{ thread.author.username }}</strong> • {{ thread.created_at|date:"d M Y \a \l\a\s H:i" }}</p>
+                {% if thread.is_locked %}
+                    <span class="badge bg-danger">Tema cerrado</span>
+                {% endif %}
+                <hr>
+                <p class="card-text">{{ thread.content }}</p>
+            </div>
+        </div>
+
+        <h3 class="mb-4">Respuestas</h3>
+
+        {% if replies %}
+            {% for reply in replies %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            <strong>{{ reply.author.username }}</strong> • {{ reply.created_at|date:"d M Y \a \l\a\s H:i" }}
+                        </h6>
+                        <p class="card-text">{{ reply.content }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted">Sin respuestas aún.</p>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            {% if user.is_banned %}
+                <div class="alert alert-danger">
+                    No puedes responder porque has sido baneado.
+                </div>
+            {% elif thread.is_locked %}
+                <div class="alert alert-warning">
+                    Este tema está cerrado y no se aceptan nuevas respuestas.
+                </div>
+            {% else %}
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Añadir respuesta</h5>
+                        <form method="post" action="{% url 'forum:add-reply' thread.slug %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <textarea name="content" class="form-control" rows="4" placeholder="Tu respuesta..." required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Publicar respuesta</button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="alert alert-info mt-4">
+                <a href="{% url 'accounts:login' %}">Inicia sesión</a> para responder en el foro.
+            </p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Blog - Carmina{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <h1 class="mb-4">Artículos</h1>
+        {% if posts %}
+            {% for post in posts %}
+                <div class="card mb-4">
+                    {% if post.featured_image %}
+                        <img src="{{ post.featured_image.url }}" class="card-img-top" alt="{{ post.title }}" style="max-height: 300px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text text-muted small">Por <strong>{{ post.author.username }}</strong> • {{ post.published_at|date:"d M Y" }}</p>
+                        {% if post.tags.exists %}
+                            <div class="mb-2">
+                                {% for tag in post.tags.all %}
+                                    <span class="badge bg-secondary">{{ tag.name }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <p class="card-text">{{ post.content_html|truncatewords:50|safe }}</p>
+                        <a href="{% url 'blog:post-detail' post.slug %}" class="btn btn-primary btn-sm">Leer más</a>
+                        <small class="text-muted ms-2">👁 {{ post.view_count }}</small>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% if is_paginated %}
+                <nav aria-label="Paginación">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1">Primero</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                            </li>
+                        {% endif %}
+
+                        <li class="page-item active">
+                            <span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+                        </li>
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Último</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% else %}
+            <p class="text-muted">No hay artículos publicados aún.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

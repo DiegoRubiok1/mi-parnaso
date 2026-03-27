@@ -1,0 +1,50 @@
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    h3 {
+        font-size: 1.1rem;
+    }
+
+    .card-body {
+        padding: var(--spacing-lg);
+    }
+
+    .blog-post {
+        padding: var(--spacing-lg);
+    }
+
+    .navbar-brand {
+        font-size: 1.4rem;
+    }
+
+    .nav-link {
+        margin-left: var(--spacing-md);
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+
+    .btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.85rem;
+    }
+
+    .card {
+        margin-bottom: var(--spacing-lg);
+    }
+}
+
