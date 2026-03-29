@@ -2,7 +2,7 @@
 .form-select {
     border: 1px solid var(--color-border);
     border-radius: 2px;
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), sans-serif;
     padding: var(--spacing-md);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }

@@ -12,7 +12,7 @@
     background-color: white;
     padding: var(--spacing-lg);
     transition: all 0.2s ease;
-    font-family: var(--font-serif);
+    font-family: var(--font-serif), serif;
     color: var(--color-text);
     text-decoration: none;
     margin-bottom: -1px;

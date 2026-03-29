@@ -38,7 +38,7 @@
 }
 
 .nav-link {
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), sans-serif;
     color: var(--color-text) !important;
     margin: 0 !important;
     font-size: 0.95rem;
@@ -58,6 +58,18 @@
     background-color: var(--color-primary);
     border-color: var(--color-primary);
     transform: none;
+}
+
+.nav-link-register {
+    background-color: white;
+    color: black !important;
+    border-color: white;
+}
+
+.nav-link-register:hover {
+    background-color: black !important;
+    color: white !important;
+    border-color: white;
 }
 
 .nav-logout-form {
