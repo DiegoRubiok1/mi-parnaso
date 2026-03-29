@@ -6,6 +6,7 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.core.urls')),
+    path('about_me/', include('apps.about_me.urls')),
     path('accounts/', include('apps.accounts.urls')),
     path('blog/', include('apps.blog.urls')),
     path('forum/', include('apps.forum.urls')),
@@ -13,4 +14,3 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-

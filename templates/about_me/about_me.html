@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Sobre mí - Mi Parnaso{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h1 class="mb-4 text-center">Sobre mí</h1>
+        <article class="content-box">
+            <p class="lead">Bienvenido a Mi Parnaso, mi rincón dedicado a la divulgación literaria.</p>
+            <p>Soy una apasionada de la literatura que ha decidido crear este espacio para compartir reseñas, reflexiones y análisis sobre obras clásicas y contemporáneas.</p>
+            <p>A través de este blog y foro, espero conectar con otros entusiastas de la lectura y fomentar un espacio de debate enriquecedor.</p>
+            <div class="text-center mt-5">
+                <a href="{% url 'blog:post-list' %}" class="btn btn-outline-dark me-2">Leer mis artículos</a>
+                <a href="{% url 'forum:thread-list' %}" class="btn btn-outline-dark">Ir al foro</a>
+            </div>
+        </article>
+    </div>
+</div>
+{% endblock %}
