@@ -1,16 +1,16 @@
 :root {
-    /* Colores (minimalista blanco/negro) */
-    --color-primary: #000000;
-    --color-primary-light: #333333;
+    /* Colores */
+    --color-primary: #000080;
+    --color-primary-light: #0072bc;
     --color-primary-dark: #000000;
-    --color-accent: #666666;
-    --color-accent-light: #999999;
-    --color-neutral: #1a1a1a;
+    --color-accent: #800040;
+    --color-accent-light: #800040;
+    --color-neutral: #0f172a;
     --color-neutral-light: #ffffff;
-    --color-neutral-lighter: #f8f8f8;
-    --color-text: #1a1a1a;
-    --color-text-light: #666666;
-    --color-border: #e0e0e0;
+    --color-neutral-lighter: #f8fafc;
+    --color-text: #1e293b;
+    --color-text-light: #64748b;
+    --color-border: #e2e8f0;
     --color-success: #27ae60;
     --color-danger: #e74c3c;
 
