@@ -5,6 +5,7 @@ from .models import Post, PostComment, Tag
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
+	"""Tag model"""
 	list_display = ("name", "slug")
 	prepopulated_fields = {"slug": ("name",)}
 
@@ -18,10 +19,18 @@ class PostAdmin(admin.ModelAdmin):
 	prepopulated_fields = {"slug": ("title",)}
 	filter_horizontal = ("tags",)
 
+	class Media:
+		css = {
+			"all": ("https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css",)
+		}
+		js = (
+			"https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js",
+			"js/admin_easymde.js",
+		)
+
 
 @admin.register(PostComment)
 class PostCommentAdmin(admin.ModelAdmin):
 	list_display = ("post", "author", "created_at")
 	list_filter = ("created_at",)
 	search_fields = ("post__title", "author__username")
-

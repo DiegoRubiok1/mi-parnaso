@@ -18,7 +18,7 @@
                         {% if post.tags.exists %}
                             <div class="mb-2">
                                 {% for tag in post.tags.all %}
-                                    <span class="badge bg-secondary">{{ tag.name }}</span>
+                                    <a href="?tag={{ tag.slug }}" class="badge bg-secondary text-decoration-none">{{ tag.name }}</a>
                                 {% endfor %}
                             </div>
                         {% endif %}
@@ -34,10 +34,10 @@
                     <ul class="pagination">
                         {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?page=1">Primero</a>
+                                <a class="page-link" href="?page=1{% if current_tag %}&tag={{ current_tag }}{% endif %}">Primero</a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if current_tag %}&tag={{ current_tag }}{% endif %}">Anterior</a>
                             </li>
                         {% endif %}
 
@@ -47,10 +47,10 @@
 
                         {% if page_obj.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if current_tag %}&tag={{ current_tag }}{% endif %}">Siguiente</a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Último</a>
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if current_tag %}&tag={{ current_tag }}{% endif %}">Último</a>
                             </li>
                         {% endif %}
                     </ul>
@@ -59,6 +59,27 @@
         {% else %}
             <p class="text-muted">No hay artículos publicados aún.</p>
         {% endif %}
+    </div>
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">Etiquetas</h5>
+            </div>
+            <div class="card-body">
+                {% if tags %}
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for tag in tags %}
+                            <a href="?tag={{ tag.slug }}" class="badge {% if current_tag == tag.slug %}bg-primary{% else %}bg-secondary text-decoration-none{% endif %}">{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0">No hay etiquetas disponibles.</p>
+                {% endif %}
+                {% if current_tag %}
+                    <a href="?" class="btn btn-sm btn-outline-secondary mt-3 w-100">Quitar filtro</a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

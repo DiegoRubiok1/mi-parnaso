@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
 
-from .models import Post, PostComment
+from .models import Post, PostComment, Tag
 
 
 class PostListView(ListView):
@@ -14,7 +14,17 @@ class PostListView(ListView):
 	paginate_by = 10
 
 	def get_queryset(self):
-		return Post.objects.filter(status="published").order_by("-published_at")
+		qs = Post.objects.filter(status="published").order_by("-published_at")
+		tag_slug = self.request.GET.get("tag")
+		if tag_slug:
+			qs = qs.filter(tags__slug=tag_slug)
+		return qs
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["tags"] = Tag.objects.all()
+		context["current_tag"] = self.request.GET.get("tag")
+		return context
 
 
 class PostDetailView(DetailView):
