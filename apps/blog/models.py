@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+import markdown
 from django.utils.text import slugify
 
 
@@ -41,6 +42,7 @@ class Post(models.Model):
 	def save(self, *args, **kwargs):
 		if not self.slug:
 			self.slug = slugify(self.title)
+		self.content_html = markdown.markdown(self.content_md)  # Convierte Markdown a HTML
 		super().save(*args, **kwargs)
 
 	def __str__(self) -> str:
