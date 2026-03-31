@@ -1,6 +1,6 @@
 .navbar {
     background-color: var(--color-neutral-light);
-    background-image: url("/media/assets/top_flowers.svg");
+    background-image: url("/static/assets/top_flowers.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
