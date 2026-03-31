@@ -9,7 +9,10 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-secret-key-change-me")
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 ALLOWED_HOSTS = [h for h in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if h]
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://miparnaso.com',
+    'https://www.miparnaso.com',
+]
 
 # Application definition
 
