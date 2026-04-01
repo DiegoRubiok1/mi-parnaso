@@ -60,21 +60,22 @@
 }
 
 .blog-layout {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--spacing-2xl);
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    align-items: start;
 }
 
 .blog-main {
-    flex: 1 1 65%;
+    min-width: 0;
 }
 
 .blog-sidebar {
-    flex: 1 1 30%;
+    min-width: 0;
 }
 
 @media (max-width: 768px) {
-    .blog-sidebar {
-        flex: 1 1 100%;
+    .blog-layout {
+        grid-template-columns: 1fr;
     }
 }
