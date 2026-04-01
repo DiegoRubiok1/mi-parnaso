@@ -30,10 +30,10 @@
 }
 
 .navbar-nav {
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -43,6 +43,7 @@
     display: flex;
     align-items: center;
     list-style: none;
+    width: 100%;
 }
 
 .nav-link {
@@ -57,7 +58,8 @@
     transition: all 0.2s ease;
     text-transform: capitalize;
     font-weight: 500;
-    display: inline-block;
+    display: block;
+    width: 100%;
     text-decoration: none;
 }
 
@@ -106,13 +108,10 @@
 }
 
 .navbar-collapse {
-    display: none !important;
+    /* Permitir que Bootstrap maneje el colapso */
 }
 
 .navbar-collapse.show {
-    display: flex !important;
-    flex-direction: column;
-    gap: var(--spacing-md);
     margin-top: var(--spacing-lg);
 }
 
@@ -124,11 +123,22 @@
     }
 
     .navbar-collapse {
-        display: flex !important;
+        /* Bootstrap manejará el display */
+    }
+
+    .navbar-nav {
         flex-direction: row;
-        flex-basis: auto;
-        flex-grow: 1;
         align-items: center;
+        gap: var(--spacing-md);
+    }
+
+    .nav-item {
+        width: auto;
+    }
+
+    .nav-link {
+        display: inline-block;
+        width: auto;
     }
 
     .navbar-collapse.show {

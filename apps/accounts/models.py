@@ -8,6 +8,7 @@ from django.dispatch import receiver
 class User(AbstractUser):
 	email = models.EmailField(unique=True)
 	is_banned = models.BooleanField(default=False)
+	is_email_verified = models.BooleanField(default=False)
 
 	def __str__(self) -> str:
 		return self.username

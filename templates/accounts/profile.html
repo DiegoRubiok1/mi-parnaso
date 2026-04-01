@@ -16,7 +16,23 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control" value="{{ user.email }}" readonly>
+                        <div class="input-group">
+                            <input type="email" class="form-control" value="{{ user.email }}" readonly>
+                            {% if user.is_email_verified %}
+                                <span class="input-group-text text-success">
+                                    <i class="bi bi-patch-check-fill"></i> Verificado
+                                </span>
+                            {% else %}
+                                <a href="{% url 'accounts:send-verification-email' %}" class="btn btn-outline-warning">
+                                    Verificar ahora
+                                </a>
+                            {% endif %}
+                        </div>
+                        {% if not user.is_email_verified %}
+                            <div class="form-text text-warning">
+                                Tu correo no está verificado. Algunas funcionalidades están restringidas.
+                            </div>
+                        {% endif %}
                     </div>
                     <hr>
                     {{ form.as_p }}

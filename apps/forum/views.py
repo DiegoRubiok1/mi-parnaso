@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
 
+from apps.accounts.decorators import email_verified_required
 from .models import ForumReply, ForumThread
 
 
@@ -27,7 +28,7 @@ class ForumThreadDetailView(DetailView):
 		return context
 
 
-@login_required
+@email_verified_required
 def create_thread_view(request):
 	if request.user.is_banned:
 		messages.error(request, "No puedes crear temas siendo baneado.")
@@ -46,7 +47,7 @@ def create_thread_view(request):
 	return render(request, "forum/create_thread.html")
 
 
-@login_required
+@email_verified_required
 def add_reply_view(request, slug):
 	thread = get_object_or_404(ForumThread, slug=slug)
 

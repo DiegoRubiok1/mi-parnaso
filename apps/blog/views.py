@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
 
+from apps.accounts.decorators import email_verified_required
 from .models import Post, PostComment, Tag
 
 
@@ -49,7 +50,7 @@ class PostDetailView(DetailView):
 		return obj
 
 
-@login_required
+@email_verified_required
 def add_comment_view(request, slug):
 	post = get_object_or_404(Post, slug=slug, status="published")
 	if request.method == "POST":
