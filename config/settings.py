@@ -9,6 +9,7 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "dev-only-secret-key-change-me")
 DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 ALLOWED_HOSTS = [h for h in os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if h]
+SITE_URL = os.getenv("SITE_URL", "")
 CSRF_TRUSTED_ORIGINS = [
     'https://miparnaso.com',
     'https://www.miparnaso.com',
@@ -110,16 +111,20 @@ LOGOUT_REDIRECT_URL = 'core:home'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Email Configuration
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    # Configuración para producción (requiere variables de entorno)
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = os.getenv('EMAIL_HOST')
-    EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
-    EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() == 'true'
-    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'no-reply@miparnaso.com')
+# Email configuration
+EMAIL_BACKEND = os.getenv(
+    "EMAIL_BACKEND",
+    "django.core.mail.backends.console.EmailBackend" if DEBUG else "django.core.mail.backends.smtp.EmailBackend",
+)
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "no-reply@miparnaso.com")
+
+if EMAIL_BACKEND == "django.core.mail.backends.smtp.EmailBackend":
+    EMAIL_HOST = os.getenv("EMAIL_HOST", "")
+    EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
+    EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() == "true"
+    EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "False").lower() == "true"
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+    EMAIL_TIMEOUT = int(os.getenv("EMAIL_TIMEOUT", 20))
+    EMAIL_FAIL_SILENTLY = False
 

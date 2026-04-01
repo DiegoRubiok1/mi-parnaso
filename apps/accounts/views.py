@@ -1,16 +1,20 @@
+import logging
+
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.shortcuts import redirect, render
-from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 from .forms import ProfileForm, RegisterForm
 
 User = get_user_model()
+logger = logging.getLogger(__name__)
 
 
 def register_view(request):
@@ -39,19 +43,26 @@ def send_verification_email(request):
         return redirect("accounts:profile")
 
     user = request.user
+    if not user.email:
+        messages.error(request, "Tu usuario no tiene correo configurado.")
+        return redirect("accounts:profile")
+
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
-    domain = request.get_host()
-    link = f"http://{domain}/accounts/verify/{uid}/{token}/"
+    verify_path = reverse("accounts:verify-email", kwargs={"uidb64": uid, "token": token})
+    if settings.SITE_URL:
+        link = f"{settings.SITE_URL.rstrip('/')}{verify_path}"
+    else:
+        link = request.build_absolute_uri(verify_path)
 
     subject = "Verifica tu correo electrónico - Mi Parnaso"
     message = f"Hola {user.username},\n\nPor favor, verifica tu correo haciendo clic en el siguiente enlace:\n{link}"
 
-    # En un entorno real, usarías render_to_string para un email HTML
     try:
-        send_mail(subject, message, None, [user.email])
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
         messages.success(request, "Se ha enviado un correo de verificación.")
     except Exception:
+        logger.exception("Error enviando correo de verificacion a %s", user.email)
         messages.error(request, "Hubo un error al enviar el correo. Inténtalo más tarde.")
 
     return redirect("accounts:profile")
