@@ -6,10 +6,23 @@
 <div class="row justify-content-center">
     <div class="col-md-8">
         <h1 class="mb-4 text-center">Sobre mí</h1>
-        <article class="content-box">
+        <article class="content-box text-center">
+            <div class="mb-4">
+                <img src="/media/profile_photos/Perfil.jpg" alt="Carmen Huélamo" class="img-fluid rounded-circle shadow" style="max-width: 250px;">
+            </div>
             <p class="lead">Bienvenido a Mi Parnaso, mi rincón dedicado a la divulgación literaria.</p>
             <p>Soy una apasionada de la literatura que ha decidido crear este espacio para compartir reseñas, reflexiones y análisis sobre obras clásicas y contemporáneas.</p>
             <p>A través de este blog y foro, espero conectar con otros entusiastas de la lectura y fomentar un espacio de debate enriquecedor.</p>
+            
+            <div class="social-links my-4">
+                <a href="https://www.instagram.com/miparnaso/" target="_blank" class="mx-3 text-dark fs-3" title="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="mailto:carmenhuemo@gmail.com" class="mx-3 text-dark fs-3" title="Gmail">
+                    <i class="bi bi-envelope"></i>
+                </a>
+            </div>
+
             <div class="text-center mt-5">
                 <a href="{% url 'blog:post-list' %}" class="btn btn-outline-dark me-2">Leer mis artículos</a>
                 <a href="{% url 'forum:thread-list' %}" class="btn btn-outline-dark">Ir al foro</a>
