@@ -117,3 +117,37 @@ def profile_view(request):
         form = ProfileForm(instance=profile)
 
     return render(request, "accounts/profile.html", {"form": form})
+
+
+@login_required
+def toggle_subscription(request, subscription_type):
+    """
+    Toggle user subscription to blog or forum.
+    """
+    if not request.user.is_email_verified:
+        messages.error(
+            request, "Debes verificar tu correo electrónico para suscribirte a las notificaciones."
+        )
+        if request.headers.get("HX-Request"):
+            return render(
+                request,
+                "accounts/partials/subscription_buttons.html",
+                {"profile": request.user.profile, "user": request.user},
+            )
+        return redirect("accounts:profile")
+
+    profile = request.user.profile
+    if subscription_type == "blog":
+        profile.subscribe_to_blog = not profile.subscribe_to_blog
+    elif subscription_type == "forum":
+        profile.subscribe_to_forum = not profile.subscribe_to_forum
+    profile.save()
+
+    if request.headers.get("HX-Request"):
+        return render(
+            request,
+            "accounts/partials/subscription_buttons.html",
+            {"profile": profile, "user": request.user},
+        )
+
+    return redirect("blog:post-list")

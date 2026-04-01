@@ -1,5 +1,9 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.core.mail import send_mail
+from django.urls import reverse
 import markdown
 from django.utils.text import slugify
 
@@ -63,3 +67,44 @@ class PostComment(models.Model):
 
 	def __str__(self) -> str:
 		return f"Comentario de {self.author} en {self.post}"
+
+
+@receiver(post_save, sender=Post)
+def notify_subscribers_new_post(sender, instance, created, **kwargs):
+    """
+    Notify subscribers via email when a new post is published.
+    """
+    if created and instance.status == "published":
+        from apps.accounts.models import Profile
+
+        subscribers = Profile.objects.filter(
+            subscribe_to_blog=True, user__is_active=True
+        ).select_related("user")
+        recipient_list = [p.user.email for p in subscribers if p.user.email]
+
+        if recipient_list:
+            post_url = reverse("blog:post-detail", kwargs={"slug": instance.slug})
+            if settings.SITE_URL:
+                full_url = f"{settings.SITE_URL.rstrip('/')}{post_url}"
+            else:
+                full_url = f"https://miparnaso.com{post_url}"
+
+            subject = f"Nuevo artículo en Mi Parnaso: {instance.title}"
+            message = (
+                f"Hola,\n\n"
+                f"Carmen ha publicado un nuevo artículo: '{instance.title}'.\n\n"
+                f"Puedes leerlo aquí: {full_url}\n\n"
+                f"--- \n"
+                f"Has recibido este correo porque estás suscrito a las novedades del blog."
+            )
+
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    recipient_list,
+                    fail_silently=True,
+                )
+            except Exception:  # pylint: disable=broad-exception-caught
+                pass

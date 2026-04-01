@@ -78,6 +78,19 @@
                 {% endif %}
             </div>
         </div>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title h6 mb-3">Notificaciones por Email</h5>
+                {% if user.is_authenticated %}
+                    {% include "accounts/partials/subscription_buttons.html" with profile=user.profile %}
+                {% else %}
+                    <p class="text-muted small">
+                        <a href="{% url 'accounts:login' %}?next={{ request.path }}">Inicia sesión</a> para suscribirte a las novedades.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

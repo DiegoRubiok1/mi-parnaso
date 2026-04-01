@@ -29,6 +29,8 @@ class Profile(models.Model):
     )
     photo = models.ImageField(upload_to="profile_photos/", blank=True, null=True)
     bio = models.TextField(max_length=500, blank=True)
+    subscribe_to_blog = models.BooleanField(default=False)
+    subscribe_to_forum = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"Perfil de {self.user.username}"  # pylint: disable=no-member
