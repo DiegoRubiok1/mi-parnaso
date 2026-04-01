@@ -38,9 +38,12 @@ def create_thread_view(request):
 		title = request.POST.get("title", "").strip()
 		content = request.POST.get("content", "").strip()
 		if title and content:
-			ForumThread.objects.create(title=title, author=request.user, content=content)
-			messages.success(request, "Tema creado.")
-			return redirect("forum:thread-list")
+			if len(title) > 200:
+				messages.error(request, "El título del tema no puede tener más de 200 caracteres.")
+			else:
+				ForumThread.objects.create(title=title, author=request.user, content=content)
+				messages.success(request, "Tema creado.")
+				return redirect("forum:thread-list")
 		else:
 			messages.error(request, "Debes llenar todos los campos.")
 
