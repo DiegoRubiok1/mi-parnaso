@@ -1,4 +1,4 @@
-<div id="subscription-panel">
+<div id="subscription-panel" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% if messages %}
         <div id="subscription-messages">
             {% for message in messages %}
