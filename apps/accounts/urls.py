@@ -6,7 +6,7 @@ from django.urls import path
 
 from .views import profile_view, register_view, send_verification_email, verify_email
 
-APP_NAME = "accounts"
+app_name = "accounts"
 
 urlpatterns = [
     path("register/", register_view, name="register"),
