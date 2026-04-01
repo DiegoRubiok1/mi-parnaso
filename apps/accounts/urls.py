@@ -1,9 +1,12 @@
+"""
+URL configuration for the accounts app.
+"""
 from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from .views import profile_view, register_view, send_verification_email, verify_email
 
-app_name = "accounts"
+APP_NAME = "accounts"
 
 urlpatterns = [
     path("register/", register_view, name="register"),
@@ -13,4 +16,3 @@ urlpatterns = [
     path("verify-email/send/", send_verification_email, name="send-verification-email"),
     path("verify/<str:uidb64>/<str:token>/", verify_email, name="verify-email"),
 ]
-

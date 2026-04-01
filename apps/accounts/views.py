@@ -1,3 +1,6 @@
+"""
+Views for the accounts app.
+"""
 import logging
 
 from django.conf import settings
@@ -18,6 +21,9 @@ logger = logging.getLogger(__name__)
 
 
 def register_view(request):
+    """
+    View for user registration.
+    """
     if request.user.is_authenticated:
         return redirect("core:home")
 
@@ -36,7 +42,9 @@ def register_view(request):
 
 @login_required
 def send_verification_email(request):
-    """Verification email view"""
+    """
+    Verification email view to send a verification link to the user.
+    """
 
     if request.user.is_email_verified:
         messages.info(request, "Tu correo ya está verificado.")
@@ -56,12 +64,15 @@ def send_verification_email(request):
         link = request.build_absolute_uri(verify_path)
 
     subject = "Verifica tu correo electrónico - Mi Parnaso"
-    message = f"Hola {user.username},\n\nPor favor, verifica tu correo haciendo clic en el siguiente enlace:\n{link}"
+    message = (
+        f"Hola {user.username},\n\n"
+        f"Por favor, verifica tu correo haciendo clic en el siguiente enlace:\n{link}"
+    )
 
     try:
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
         messages.success(request, "Se ha enviado un correo de verificación.")
-    except Exception:
+    except Exception:  # pylint: disable=broad-exception-caught
         logger.exception("Error enviando correo de verificacion a %s", user.email)
         messages.error(request, "Hubo un error al enviar el correo. Inténtalo más tarde.")
 
@@ -69,6 +80,9 @@ def send_verification_email(request):
 
 
 def verify_email(request, uidb64, token):
+    """
+    View to verify the user's email using the link sent via email.
+    """
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
@@ -82,13 +96,16 @@ def verify_email(request, uidb64, token):
         if not request.user.is_authenticated:
             login(request, user)
         return redirect("core:home")
-    else:
-        messages.error(request, "El enlace de verificación es inválido o ha expirado.")
-        return redirect("core:home")
+
+    messages.error(request, "El enlace de verificación es inválido o ha expirado.")
+    return redirect("core:home")
 
 
 @login_required
 def profile_view(request):
+    """
+    View for displaying and updating the user profile.
+    """
     profile = request.user.profile
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=profile)

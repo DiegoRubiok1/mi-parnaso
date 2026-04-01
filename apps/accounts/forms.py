@@ -1,3 +1,6 @@
+"""
+Forms for the accounts app.
+"""
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
@@ -8,11 +11,19 @@ User = get_user_model()
 
 
 class RegisterForm(UserCreationForm):
+    """
+    Form for user registration.
+    """
     email = forms.EmailField(required=True)
 
-    class Meta(UserCreationForm.Meta):
+    class Meta(UserCreationForm.Meta):  # pylint: disable=too-many-ancestors
+        """
+        Meta options for RegisterForm.
+        """
         model = User
         fields = ("username", "email", "password1", "password2")
+
+    # pylint: disable=too-few-public-methods
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -58,6 +69,9 @@ class RegisterForm(UserCreationForm):
         )
 
     def clean_email(self):
+        """
+        Validate that the email is unique.
+        """
         email = self.cleaned_data["email"].lower()
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Este email ya esta en uso.")
@@ -65,7 +79,12 @@ class RegisterForm(UserCreationForm):
 
 
 class ProfileForm(forms.ModelForm):
-    class Meta:
+    """
+    Form for updating user profile.
+    """
+    class Meta:  # pylint: disable=too-few-public-methods
+        """
+        Meta options for ProfileForm.
+        """
         model = Profile
         fields = ("photo", "bio")
-
