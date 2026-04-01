@@ -41,8 +41,8 @@ def send_verification_email(request):
     user = request.user
     token = default_token_generator.make_token(user)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
-	domain = request.get_host()
-	link = f"http://{domain}/accounts/verify/{uid}/{token}/"
+    domain = request.get_host()
+    link = f"http://{domain}/accounts/verify/{uid}/{token}/"
 
     subject = "Verifica tu correo electrónico - Mi Parnaso"
     message = f"Hola {user.username},\n\nPor favor, verifica tu correo haciendo clic en el siguiente enlace:\n{link}"
