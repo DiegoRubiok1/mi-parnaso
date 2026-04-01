@@ -59,3 +59,22 @@
     line-height: 1.8;
 }
 
+.blog-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2xl);
+}
+
+.blog-main {
+    flex: 1 1 65%;
+}
+
+.blog-sidebar {
+    flex: 1 1 30%;
+}
+
+@media (max-width: 768px) {
+    .blog-sidebar {
+        flex: 1 1 100%;
+    }
+}
