@@ -11,7 +11,7 @@ urlpatterns = [
     path('accounts/', include('apps.accounts.urls')),
     path('blog/', include('apps.blog.urls')),
     path('forum/', include('apps.forum.urls')),
-		re_path(r'^media/(?P<path>.*)$', serve, {
+	re_path(r'^media/(?P<path>.*)$', serve, {
         'document_root': settings.MEDIA_ROOT,
     }),
 ]
