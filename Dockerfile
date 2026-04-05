@@ -19,7 +19,6 @@ COPY . /app/
 
 # Recolectar archivos estáticos para producción
 RUN python manage.py collectstatic --noinput
-
 # Exponer el puerto
 EXPOSE 8000
 
