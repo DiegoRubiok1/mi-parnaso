@@ -1,3 +1,6 @@
+"""
+URLs for the forum app.
+"""
 from django.urls import path
 
 from .views import (
@@ -7,12 +10,23 @@ from .views import (
     create_thread_view,
 )
 
-app_name = "forum"
+app_name = "forum"  # pylint: disable=invalid-name
 
 urlpatterns = [
-    path("", ForumThreadListView.as_view(), name="thread-list"),
-    path("create/", create_thread_view, name="create-thread"),
-    path("<slug:slug>/", ForumThreadDetailView.as_view(), name="thread-detail"),
-    path("<slug:slug>/reply/", add_reply_view, name="add-reply"),
+    path(
+        "",
+        ForumThreadListView.as_view(),
+        name="thread-list"),
+    path(
+        "create/",
+        create_thread_view,
+        name="create-thread"),
+    path(
+        "<slug:slug>/",
+        ForumThreadDetailView.as_view(),
+        name="thread-detail"),
+    path(
+        "<slug:slug>/reply/",
+        add_reply_view,
+        name="add-reply"),
 ]
-
