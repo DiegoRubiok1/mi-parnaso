@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import DetailView, ListView
+from django.db.models import Count
 
 from apps.accounts.decorators import email_verified_required
 from .models import ForumReply, ForumThread
@@ -12,7 +13,9 @@ class ForumThreadListView(ListView):
 	template_name = "forum/thread_list.html"
 	context_object_name = "threads"
 	paginate_by = 20
-	ordering = ["-created_at"]
+
+	def get_queryset(self):
+		return ForumThread.objects.annotate(reply_count_agg=Count('replies')).order_by('-reply_count_agg', '-created_at')
 
 
 class ForumThreadDetailView(DetailView):

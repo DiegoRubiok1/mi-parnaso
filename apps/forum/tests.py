@@ -9,8 +9,8 @@ from .models import ForumThread
 class ForumTests(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user(username="user", email="user@test.com", password="pass123")
-        cls.banned_user = User.objects.create_user(username="banned", email="banned@test.com", password="pass123")
+        cls.user = User.objects.create_user(username="user", email="user@test.com", password="pass123", is_email_verified=True)
+        cls.banned_user = User.objects.create_user(username="banned", email="banned@test.com", password="pass123", is_email_verified=True)
         cls.banned_user.is_banned = True
         cls.banned_user.save()
         cls.thread = ForumThread.objects.create(
