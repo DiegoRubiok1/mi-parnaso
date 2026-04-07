@@ -1,150 +1,152 @@
-# Requisitos del blog literario (versión cerrada)
+# Literary Blog Requirements (Updated)
 
-## 1) Objetivo
-Sustituir el blog estático actual (Hugo + Nginx) por una plataforma dinámica para divulgación literaria,
-con gestión de artículos en Markdown, comentarios, foro y administración centralizada.
+## 1) Objective
+Replace the current static blog (Hugo + Nginx) with a dynamic platform for literary dissemination, featuring Markdown article management, comments, a forum, user profiles, and centralized administration.
 
-## 2) Alcance MVP (primera entrega)
+## 2) MVP Scope (Current Implementation)
 
-Incluye:
-- Registro, login, logout y perfil básico de usuario.
-- Publicación y gestión de artículos desde panel de administración.
-- Conversión de Markdown a HTML seguro.
-- Comentarios en artículos para usuarios autenticados.
-- Foro básico (temas + respuestas) con advertencia de contenido sensible.
-- Baneo de usuarios para impedir su participación en el foro.
-- Estadística básica de visitas por artículo.
+Includes:
+- Registration, login, logout, and basic user profile management.
+- Article publication and management from the administration panel.
+- Secure Markdown to HTML conversion.
+- Article comments for authenticated users.
+- Basic forum (threads + replies) with a sensitive content warning.
+- User banning to prevent participation in the forum.
+- Basic view count statistics per article.
+- **Email notifications** for subscribers when new blog posts or forum threads are published.
+- 'About Me' section detailing author information.
 
-No incluye en MVP:
-- Notificaciones por email.
-- Reacciones, likes o sistema de reputación.
-- Búsqueda avanzada o recomendador.
-- Moderación avanzada (reportes, colas, auditoría detallada).
+Does not include in MVP:
+- Advanced reputation system (reactions, likes).
+- Advanced search or content recommender.
+- Advanced moderation (reports, queues, detailed auditing).
 
-## 3) Decisiones técnicas recomendadas
+## 3) Technical Decisions
 
 - Backend: `Django` (Python).
-- Base de datos: `SQLite3`.
+- Database: `SQLite3`.
 - Frontend: `Django Templates + HTMX + Bootstrap`.
-- Despliegue: contenedor `Docker` en servidor Ubuntu.
+- Deployment: `Docker` container on an Ubuntu server.
 
-Rationale (enfoque principiante):
-- Evita la complejidad de una SPA (React/Vue) para el primer proyecto.
-- Mantiene la lógica en servidor y minimiza JavaScript manual.
-- Permite añadir interactividad progresiva con HTMX.
+Rationale (Beginner-friendly approach):
+- Avoids the complexity of a SPA (React/Vue) for the initial project.
+- Keeps logic on the server and minimizes manual JavaScript.
+- Allows for progressive interactivity using HTMX.
 
-## 4) Requisitos funcionales
+## 4) Functional Requirements
 
-### 4.1 Usuarios y autenticación
-- RF-USER-01: El sistema permite registro con `username` único, `email` único y contraseña.
-- RF-USER-02: El sistema permite login y logout.
-- RF-USER-03: Cada usuario puede editar su perfil con foto y biografía.
-- RF-USER-04: El sistema impide registro con email duplicado.
-- RF-USER-05: Usuario baneado no puede crear temas ni responder en foro.
+### 4.1 Users and Authentication
+- FR-USER-01: The system allows registration with a unique `username`, unique `email`, and password.
+- FR-USER-02: The system allows login and logout.
+- FR-USER-03: Users can edit their profile, including an avatar photo, biography, and notification preferences.
+- FR-USER-04: The system prevents registration with duplicate emails.
+- FR-USER-05: Banned users cannot create topics or reply in the forum.
+- FR-USER-06: Users can opt-in to receive email notifications for new blog posts and forum threads.
 
-### 4.2 Panel de administración
-- RF-ADMIN-01: Existe acceso al panel para personal administrador.
-- RF-ADMIN-02: El administrador puede crear artículos con título, contenido Markdown (con imágenes), imagen destacada y 
-               etiquetas.
-- RF-ADMIN-03: El administrador puede previsualizar el artículo antes de publicar.
-- RF-ADMIN-04: El administrador puede editar y eliminar artículos.
-- RF-ADMIN-05: El administrador puede ver contador de visitas por artículo.
-- RF-ADMIN-06: El administrador puede banear/desbanear usuarios.
+### 4.2 Administration Panel
+- FR-ADMIN-01: Admin panel access is available for administrative staff.
+- FR-ADMIN-02: Admins can create articles with a title, Markdown content (including images), a featured image, and tags.
+- FR-ADMIN-03: Admins can preview articles before publishing.
+- FR-ADMIN-04: Admins can edit and delete articles.
+- FR-ADMIN-05: Admins can view the view count per article.
+- FR-ADMIN-06: Admins can ban and unban users (logging the reason in the `BanLog`).
 
-Nota de implementación:
-- Se utilizará `Django Admin` como panel base.
-- El superusuario inicial se crea desde variables de entorno del `.env` durante el bootstrap.
+Implementation Note:
+- `Django Admin` is used as the base panel.
+- The initial superuser is created using environment variables in the `.env` file during bootstrapping.
 
-### 4.3 Blog principal
-- RF-BLOG-01: La home lista artículos publicados con título, imagen destacada, fecha y autor.
-- RF-BLOG-02: La vista de detalle muestra contenido renderizado desde Markdown.
-- RF-BLOG-03: Solo usuarios autenticados pueden comentar artículos.
-- RF-BLOG-04: Cada comentario muestra autor, fecha y contenido.
+### 4.3 Main Blog
+- FR-BLOG-01: The homepage lists published articles with their title, featured image, date, and author.
+- FR-BLOG-02: The detail view shows content securely rendered from Markdown to HTML.
+- FR-BLOG-03: Only authenticated users can comment on articles.
+- FR-BLOG-04: Each comment displays the author, date, and content.
+- FR-BLOG-05: Subscribers receive an email alert with the article link when a new post is published.
 
-### 4.4 Foro
-- RF-FORUM-01: Solo usuarios autenticados pueden crear temas.
-- RF-FORUM-02: Solo usuarios autenticados pueden responder temas.
-- RF-FORUM-03: Antes de acceder al foro se muestra advertencia de contenido sensible y normas básicas.
-- RF-FORUM-04: Usuarios baneados no pueden publicar en foro.
+### 4.4 Forum
+- FR-FORUM-01: Only authenticated users can create threads.
+- FR-FORUM-02: Only authenticated users can reply to threads.
+- FR-FORUM-03: A sensitive content warning and community guidelines are displayed before accessing the forum.
+- FR-FORUM-04: Banned users are restricted from publishing in the forum.
+- FR-FORUM-05: Subscribers receive an email alert when a new forum thread is created.
 
-### 4.5 Markdown y seguridad de contenido
-- RF-MD-01: El contenido de artículos se escribe en Markdown.
-- RF-MD-02: El sistema convierte Markdown a HTML al mostrar/publicar.
-- RF-MD-03: El HTML resultante se sanitiza para evitar XSS.
+### 4.5 Markdown and Content Security
+- FR-MD-01: Article content is written in Markdown.
+- FR-MD-02: The system converts Markdown to HTML when displaying or publishing.
+- FR-MD-03: The resulting HTML is sanitized to prevent XSS attacks.
 
-### 4.6 Estadísticas
-- RF-STATS-01: Cada vista de artículo incrementa contador de visitas.
-- RF-STATS-02: El administrador puede consultar visitas totales por artículo en el panel.
+### 4.6 Statistics
+- FR-STATS-01: Every article detail view increments the view counter.
+- FR-STATS-02: The administrator can query total views per article within the control panel.
 
-## 5) Criterios de aceptación (verificables)
+## 5) Acceptance Criteria (Verifiable)
 
-### 5.1 Registro y autenticación
-- CA-01: Dado un email existente, cuando intento registrarme con ese email, entonces el sistema rechaza el registro.
-- CA-02: Dado un usuario válido, cuando inicia sesión, entonces accede a su sesión autenticada.
-- CA-03: Dado un usuario autenticado, cuando cierra sesión, entonces la sesión queda invalidada.
+### 5.1 Registration and Authentication
+- AC-01: Given an existing email, when trying to register with it, the system rejects the registration.
+- AC-02: Given a valid user, when logging in, they gain access to their authenticated session.
+- AC-03: Given an authenticated user, when logging out, the session is properly invalidated.
 
-### 5.2 Administración de artículos
-- CA-04: Dado un administrador, cuando crea un artículo con título y contenido, entonces el artículo queda publicado.
-- CA-05: Dado un artículo existente, cuando el administrador lo edita, entonces los cambios se reflejan en la vista 
-  pública.
-- CA-06: Dado un artículo, cuando se previsualiza, entonces se muestra HTML renderizado desde Markdown antes de 
-  publicar.
+### 5.2 Article Administration
+- AC-04: Given an admin, when creating an article with a title and content, the article can be published.
+- AC-05: Given an existing article, when edited by an admin, changes are immediately reflected on the public view.
+- AC-06: Given an article, when previewed, it displays the rendered HTML from Markdown before publishing.
 
-### 5.3 Comentarios
-- CA-07: Dado un usuario no autenticado, cuando intenta comentar, entonces el sistema exige login.
-- CA-08: Dado un usuario autenticado, cuando publica comentario, entonces este aparece con autor y fecha.
+### 5.3 Comments
+- AC-07: Given an unauthenticated user, when attempting to comment, the system requires them to log in.
+- AC-08: Given an authenticated user, when posting a comment, it appears alongside the author's name and date.
 
-### 5.4 Foro y baneo
-- CA-09: Dado un usuario autenticado no baneado, cuando crea tema en foro, entonces el tema se publica.
-- CA-10: Dado un usuario baneado, cuando intenta crear tema o responder, entonces el sistema bloquea la acción.
-- CA-11: Dado cualquier usuario, cuando entra al foro por primera vez en sesión, entonces ve el aviso de contenido sensible.
+### 5.4 Forum and Banning
+- AC-09: Given an unbanned authenticated user, when creating a forum thread, the thread is published.
+- AC-10: Given a banned user, when attempting to create a thread or reply, the system blocks the action.
+- AC-11: Given any user, when entering the forum for the first time in their session, they see the sensitive content warning.
 
-### 5.5 Estadísticas
-- CA-12: Dado un artículo, cuando se abre su detalle, entonces su contador de visitas aumenta en +1.
-- CA-13: Dado un administrador en panel, cuando consulta artículos, entonces puede ver visitas acumuladas por artículo.
+### 5.5 Statistics
+- AC-12: Given an article, when its detail view is opened, its view count increases by +1.
+- AC-13: Given an admin in the panel, when viewing articles, they can see the accrued views per article.
 
-## 6) Requisitos no funcionales
+## 6) Non-Functional Requirements
 
-- RNF-01: Interfaz responsive (móvil, tableta y escritorio).
-- RNF-02: Persistencia en `SQLite3`.
-- RNF-03: Backend en `Django`.
-- RNF-04: Despliegue self-hosted con `Docker` en Ubuntu Server.
-- RNF-05: Validación de formularios en backend.
-- RNF-06: Protección CSRF activa en formularios.
-- RNF-07: Sanitización de HTML renderizado desde Markdown.
+- NFR-01: Responsive interface (mobile, tablet, desktop).
+- NFR-02: Data persistence using `SQLite3`.
+- NFR-03: Backend framework: `Django`.
+- NFR-04: Self-hosted deployment via `Docker` on Ubuntu Server.
+- NFR-05: Backend form validation.
+- NFR-06: Active CSRF protection on forms.
+- NFR-07: Sanitization of HTML rendered from Markdown.
 
-## 7) Roadmap por fases
+## 7) Roadmap & Phasing
 
-### Fase 1 - MVP funcional
-- Usuarios: registro/login/logout/perfil.
-- Blog: listado + detalle + comentarios autenticados.
-- Admin: CRUD de artículos + previsualización Markdown.
-- Foro: temas/respuestas + aviso sensible.
-- Baneo básico y contador de visitas.
+### Phase 1 - MVP (Implemented)
+- Users: Registration/login/logout/profile settings (including subscriptions).
+- Blog: Listings + detail view + authenticated comments + email notifications.
+- Admin: Article CRUD + Markdown preview.
+- Forum: Threads/replies + sensitive warning + email notifications.
+- Basic user banning (`BanLog`) and rudimentary view counters.
+- "About Me" static integration.
 
-### Fase 2 - Endurecimiento
-- Tests de autenticación, permisos y flujos críticos.
-- Mejoras de UX (paginación y feedback de formularios).
-- Métricas diarias de visitas por artículo.
+### Phase 2 - Hardening
+- Strengthen authentication tests, permissions, and critical flows.
+- UX improvements (pagination and form feedback).
+- Daily metrics for article visits.
 
-### Fase 3 - Post-MVP
-- Moderación avanzada (reportes, ocultación de contenido).
-- Búsqueda y filtros por etiquetas.
-- Integraciones opcionales (email de confirmación, analítica externa).
+### Phase 3 - Post-MVP
+- Advanced moderation (reports, content hiding).
+- Search and filtering by tags.
+- Additional integrations (e.g., full email confirmation with secure links, external analytics).
 
-## 8) Backlog post-MVP (priorizado)
+## 8) Post-MVP Backlog (Prioritized)
 
-- BL-01: Verificación de email por enlace.
-- BL-02: Recuperación de contraseña por correo.
-- BL-03: Búsqueda de artículos y foro.
-- BL-04: Filtros por etiquetas y autor.
-- BL-05: Sistema de reportes y moderación avanzada.
-- BL-06: Dashboard de analítica con series temporales.
+- BL-01: Secure link email verification.
+- BL-02: Password recovery flow via email.
+- BL-03: Search functionality for articles and the forum.
+- BL-04: advanced filtering by tags and authors.
+- BL-05: Reporting system and advanced moderation tools.
+- BL-06: Analytics dashboard featuring time series data.
 
-## 9) Dudas cerradas para esta versión
+## 9) Resolved Definitions for Current Version
 
-Para evitar bloqueo en implementación, se fijan estas decisiones:
-- Validación de email en MVP = unicidad de email (sin confirmación por enlace).
-- Estadísticas en MVP = contador total por artículo.
-- Baneo en MVP = bloqueo de escritura en foro (crear tema/responder).
-- Panel admin en MVP = `Django Admin`, no panel custom.
+To avoid implementation blocks, the following decisions were finalized:
+- Email validation in MVP = email uniqueness check (though a boolean flag `is_email_verified` exists in the model).
+- MVP Statistics = total view count per article only.
+- MVP Banning = blocking write-access in the forum (create thread / reply).
+- MVP Admin Panel = native `Django Admin`.
+- **Added features over original MVP scope**: Email notifications for post publishing and forum topics are now fully functional functionalities based on user profile preferences.
