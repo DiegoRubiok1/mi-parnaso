@@ -5,7 +5,6 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      # Montamos la bbdd y media para que persistan y no se pierdan al reiniciar
       - ./db.sqlite3:/app/db.sqlite3
       - ./media:/app/media
     env_file:
