@@ -12,12 +12,12 @@ Plataforma de divulgación literaria desarrollada con Django, SQLite y Bootstrap
 ## Tecnologías Utilizadas:
 - **Backend**: Django
 - **Base de Datos**: SQLite
-- **Frontend**: Bootstrap, HTML, CSS, JavaScript (en ese orden de relevancia)
-- **Deploy**: Docker
+- **Frontend**: HTMX, Bootstrap, CSS, JavaScript (en ese orden de relevancia)
+- **Deploy**: Docker y Ubuntu Server 25.10
 
 ## Puesta en marcha (Ubuntu + Docker)
 
-Sigue estos pasos para desplegar la aplicación en un servidor Ubuntu utilizando Docker:
+Pasos para desplegar la aplicación en un servidor debian utilizando Docker:
 
 1. **Clonar el repositorio:**
    ```bash
@@ -33,11 +33,11 @@ Sigue estos pasos para desplegar la aplicación en un servidor Ubuntu utilizando
    ```
 
 3. **Configurar el entorno:**
-   Crea un archivo `.env.prod` basándote en la configuración de Django (necesario para el contenedor de la web):
+   Crear un archivo `.env.prod` basándose en la configuración de Django (necesario para el contenedor de la web):
    ```bash
    nvim .env.prod
    ```
-   *(Asegúrate de configurar `DEBUG=False`, `ALLOWED_HOSTS`, y una `SECRET_KEY` segura).*
+   *(Asegurarse de configurar `DEBUG=False`, `ALLOWED_HOSTS`, y una `SECRET_KEY` segura).*
 
 4. **Desplegar con Docker Compose:**
    ```bash
