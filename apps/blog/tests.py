@@ -48,13 +48,21 @@ class BlogTests(TestCase):
     def test_post_detail_increments_view_count(self):
         """Test that viewing a post detail increments its view count."""
         self.assertEqual(self.published_post.view_count, 0)
-        self.client.get(
-            reverse(
-                "blog:post-detail",
-                kwargs={
-                    "slug": "test-post"}))
+        url = reverse("blog:post-detail", kwargs={"slug": "test-post"})
+        self.client.get(url)
         self.published_post.refresh_from_db()
         self.assertEqual(self.published_post.view_count, 1)
+
+        # Subsequent requests from same session should NOT increment
+        self.client.get(url)
+        self.published_post.refresh_from_db()
+        self.assertEqual(self.published_post.view_count, 1, "View count should not increment twice from same session")
+
+        # Request from a DIFFERENT session SHOULD increment
+        new_client = self.client_class()
+        new_client.get(url)
+        self.published_post.refresh_from_db()
+        self.assertEqual(self.published_post.view_count, 2, "View count should increment from a different session")
 
     def test_comment_requires_login(self):
         """Test that adding a comment requires the user to be logged in."""

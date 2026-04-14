@@ -51,8 +51,15 @@ class PostDetailView(DetailView):
 
     def get_object(self, queryset=None):
         obj = super().get_object(queryset)
-        obj.view_count += 1
-        obj.save(update_fields=["view_count"])
+        
+        # Check if the post has already been viewed in the current session
+        viewed_posts = self.request.session.get('viewed_posts', [])
+        if obj.id not in viewed_posts:
+            obj.view_count += 1
+            obj.save(update_fields=["view_count"])
+            viewed_posts.append(obj.id)
+            self.request.session['viewed_posts'] = viewed_posts
+            
         return obj
 
 
