@@ -2,7 +2,7 @@
 URL configuration for the accounts app.
 """
 from django.contrib.auth import views as auth_views
-from django.urls import path
+from django.urls import path, reverse_lazy
 
 from .forms import CustomPasswordResetForm
 from .views import (
@@ -35,7 +35,7 @@ urlpatterns = [
             template_name="accounts/password_reset_form.html",
             email_template_name="accounts/password_reset_email.html",
             subject_template_name="accounts/password_reset_subject.txt",
-            success_url="/accounts/password-reset/done/",
+            success_url=reverse_lazy("accounts:password_reset_done"),
         ),
         name="password_reset",
     ),
@@ -50,7 +50,7 @@ urlpatterns = [
         "password-reset-confirm/<uidb64>/<token>/",
         auth_views.PasswordResetConfirmView.as_view(
             template_name="accounts/password_reset_confirm.html",
-            success_url="/accounts/password-reset-complete/",
+            success_url=reverse_lazy("accounts:password_reset_complete"),
         ),
         name="password_reset_confirm",
     ),
