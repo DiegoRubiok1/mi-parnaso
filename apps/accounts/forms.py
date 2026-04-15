@@ -3,7 +3,7 @@ Forms for the accounts app.
 """
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
 
 from .models import Profile
 
@@ -88,3 +88,16 @@ class ProfileForm(forms.ModelForm):
         """
         model = Profile
         fields = ("photo", "bio")
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    """
+    Custom password reset form that validates the email exists.
+    """
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if not User.objects.filter(email=email).exists():
+            raise forms.ValidationError(
+                "No existe ningún usuario con esta dirección de correo electrónico."
+            )
+        return email
